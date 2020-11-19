@@ -1,0 +1,5 @@
+---
+- name: Disable firewalld.
+  service:
+    name: "firewalld.service"
+    state: stopped

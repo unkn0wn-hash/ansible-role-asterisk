@@ -1,0 +1,18 @@
+---
+core_packages:
+  - net-tools
+  - epel-release
+  - wget
+  - vim-enhanced
+  - kernel
+  - kernel-devel
+  - kernel-headers
+
+libpri_source: "http://downloads.asterisk.org/pub/telephony/libpri/libpri-current.tar.gz"
+asterisk_source: "http://downloads.asterisk.org/pub/telephony/asterisk/old-releases/asterisk-11.25.3.tar.gz"
+dahdi_source: "https://downloads.asterisk.org/pub/telephony/dahdi-linux-complete/dahdi-linux-complete-2.9.0+2.9.0.1.tar.gz"
+
+src_path: "/usr/src"
+dahdi_path: "/usr/src/dahdi-linux-complete-2.9.0+2.9.0.1"
+libpri_path: "/usr/src/libpri-1.6.0"
+asterisk_path: "/usr/src/asterisk-11.25.3"

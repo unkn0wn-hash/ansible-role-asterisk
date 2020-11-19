@@ -1,0 +1,58 @@
+---
+- name: Do install core packages.
+  yum:
+    name: "{{ core_packages }}"
+
+- name: Install the 'Development tools' package group.
+  yum:
+    name: "@Development tools"
+    state: present
+
+- name: Download libpri.
+  get_url: url={{ libpri_source }} dest={{ src_path }}
+
+- name: Download dahdi.
+  get_url: url={{ dahdi_source }} dest={{ src_path }}
+
+- name: Download asterisk 11.
+  get_url: url={{ asterisk_source }} dest={{ src_path }}
+
+- name: Extract libpri.
+  unarchive:
+    src: "{{ src_path }}/libpri-current.tar.gz"
+    dest: "{{ src_path }}"
+    remote_src: True
+
+- name: Extract dahdi.
+  unarchive:
+    src: "{{ src_path }}/dahdi-linux-complete-2.9.0+2.9.0.1.tar.gz"
+    dest: "{{ src_path }}"
+    remote_src: True
+
+- name: Extract asterisk.
+  unarchive:
+    src: "{{ src_path }}/asterisk-11.25.3.tar.gz"
+    dest: "{{ src_path }}"
+    remote_src: True
+
+- name: Install dahdi.
+  shell: "cd {{ dahdi_path }} && make && make install && make config"
+
+- name: Install libpri.
+  shell: "cd {{ libpri_path }} && make && make install"
+
+- name: Install asterisk.
+  shell: "cd {{ asterisk_path }} && ./contrib/scripts/install_prereq install && ./contrib/scripts/install_prereq install-unpackaged && ./configure --libdir=/usr/lib64 && make && make install && make config && make install-logrotate && make samples"
+
+- name: Disable SELinux.
+  shell: "sed -i -e s,'SELINUX=enforcing','SELINUX=disabled', /etc/selinux/config"
+
+- name: Disable Firewalld.
+  service:
+    name: "firewalld.service"
+    state: stopped
+
+- name: Enable Asterisk.
+  service:
+    name: "asterisk.service"
+    state: enabled
