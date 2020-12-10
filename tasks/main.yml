@@ -55,4 +55,4 @@
 - name: Enable Asterisk.
   service:
     name: "asterisk.service"
-    state: enabled
+    enabled: yes
